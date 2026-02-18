@@ -1,0 +1,18 @@
+# Fichiers Git
+.git
+.gitignore
+
+# Fichiers README
+README.md
+
+# Fichiers de développement
+*.md
+.vscode
+.idea
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Dépendances (si présentes)
+node_modules
