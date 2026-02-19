@@ -114,7 +114,14 @@ document.addEventListener('DOMContentLoaded', function () {
   // Formulaire de contact
   const contactForm = document.getElementById('contact-form');
 
+  // Charger dynamiquement l'URL Formspree depuis le fichier formspree.key
   if (contactForm) {
+    fetch('formspree.key')
+      .then(response => response.text())
+      .then(url => {
+        contactForm.action = url.trim();
+      });
+
     contactForm.addEventListener('submit', function (e) {
       // Afficher un message de chargement
       const submitButton = this.querySelector('.btn-primary');
