@@ -1,3 +1,6 @@
+# Fichiers Docker
+Dockerfile
+.dockerignore
 # Fichiers Git
 .git
 .gitignore

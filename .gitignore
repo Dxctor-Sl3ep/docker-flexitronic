@@ -1,2 +1,10 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers de développement
+.vscode/
+.idea/
+node_modules/
 # Formspree config
 formspree.key

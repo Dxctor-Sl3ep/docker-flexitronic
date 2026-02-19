@@ -1,55 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+  // --- 1. SÉLECTION DES ÉLÉMENTS GLOBAUX ---
   const header = document.getElementById('header');
-  let lastScroll = 0;
-
-  window.addEventListener('scroll', function () {
-    const currentScroll = window.pageYOffset;
-
-    // Ajouter une ombre au header lors du scroll
-    if (currentScroll > 50) {
-      header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
-    } else {
-      header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-    }
-
-    lastScroll = currentScroll;
-  });
-
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-
-      // Vérifier si c'est un lien d'ancre
-      if (href.startsWith('#')) {
-        e.preventDefault();
-
-        const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-          // Calculer la position en tenant compte du header
-          const headerHeight = header.offsetHeight;
-          const targetPosition = targetElement.offsetTop - headerHeight;
-
-          // Scroll fluide vers la section
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-
-          // Fermer le menu mobile si ouvert
-          navMenu.classList.remove('active');
-        }
-      }
-    });
-  });
-
-  const hamburger = document.getElementById('hamburger');
+  const hero = document.querySelector('.hero');
+  const sections = document.querySelectorAll('section[id]');
   const navMenu = document.getElementById('nav-menu');
+  const hamburger = document.getElementById('hamburger');
 
+  // --- 2. GESTION DU MENU MOBILE ---
   if (hamburger && navMenu) {
     hamburger.addEventListener('click', function () {
       navMenu.classList.toggle('active');
@@ -65,218 +23,180 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // --- 3. DÉFILEMENT DOUX (SMOOTH SCROLL) ---
+  // Sélectionne tous les liens d'ancre (navigation et boutons CTA)
+  const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
-  const sections = document.querySelectorAll('section[id]');
+  anchorLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return; // Ignorer les liens vides
 
-  function highlightNavigation() {
-    const scrollY = window.pageYOffset;
-
-    sections.forEach(section => {
-      const sectionHeight = section.offsetHeight;
-      const sectionTop = section.offsetTop - header.offsetHeight - 50;
-      const sectionId = section.getAttribute('id');
-      const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-
-      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-        navLink?.classList.add('active');
-      } else {
-        navLink?.classList.remove('active');
-      }
-    });
-  }
-
-  window.addEventListener('scroll', highlightNavigation);
-
-  // Animation de scroll
-  const observerOptions = {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
-  };
-
-  const observer = new IntersectionObserver(function (entries) {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, observerOptions);
-
-  // Observer les cartes et sections
-  const animatedElements = document.querySelectorAll('.expertise-card, .realisation-card, .about-content');
-  animatedElements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
-
-  // Formulaire de contact
-  const contactForm = document.getElementById('contact-form');
-
-  // Charger dynamiquement l'URL Formspree depuis le fichier formspree.key
-  if (contactForm) {
-    fetch('formspree.key')
-      .then(response => response.text())
-      .then(url => {
-        contactForm.action = url.trim();
-      });
-
-    contactForm.addEventListener('submit', function (e) {
-      // Afficher un message de chargement
-      const submitButton = this.querySelector('.btn-primary');
-      const originalText = submitButton.textContent;
-
-      submitButton.textContent = 'Envoi en cours...';
-      submitButton.disabled = true;
-    });
-
-    // Validation en temps réel des champs
-    const inputs = contactForm.querySelectorAll('input, textarea');
-
-    inputs.forEach(input => {
-      input.addEventListener('blur', function () {
-        if (this.hasAttribute('required') && !this.value.trim()) {
-          this.style.borderColor = '#dc3545';
-        } else {
-          this.style.borderColor = '#dee2e6';
-        }
-      });
-
-      input.addEventListener('input', function () {
-        if (this.value.trim()) {
-          this.style.borderColor = '#28a745';
-        }
-      });
-    });
-  }
-
-  const hero = document.querySelector('.hero');
-
-  if (hero) {
-    window.addEventListener('scroll', function () {
-      const scrolled = window.pageYOffset;
-      const parallaxSpeed = 0.5;
-
-      // Effet parallaxe sur l'image de fond
-      hero.style.backgroundPositionY = -(scrolled * parallaxSpeed) + 'px';
-    });
-  }
-
-  const ctaButtons = document.querySelectorAll('.btn[href^="#"]');
-
-  ctaButtons.forEach(button => {
-    button.addEventListener('click', function (e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
+      const targetId = href.substring(1);
       const targetElement = document.getElementById(targetId);
 
       if (targetElement) {
-        const headerHeight = header.offsetHeight;
+        e.preventDefault();
+
+        // Calculer la position en tenant compte de la hauteur du header
+        const headerHeight = header ? header.offsetHeight : 0;
         const targetPosition = targetElement.offsetTop - headerHeight;
 
         window.scrollTo({
           top: targetPosition,
           behavior: 'smooth'
         });
+
+        // Fermer le menu mobile si ouvert
+        if (navMenu) navMenu.classList.remove('active');
+        if (hamburger) hamburger.classList.remove('active');
       }
     });
   });
 
+  // --- 4. OPTIMISATION GLOBALE DU SCROLL (60 FPS) ---
+  let ticking = false;
 
-  // Anime un compteur numérique de 0 à la valeur cible sur une durée donnée
-  function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
+  // Cette fonction regroupe TOUS les calculs liés au scroll
+  function handleScrollUpdates() {
+    const scrollY = window.pageYOffset;
 
-    const timer = setInterval(() => {
-      start += increment;
-      element.textContent = Math.floor(start);
-
-      if (start >= target) {
-        element.textContent = target;
-        clearInterval(timer);
+    // A. Ombre du header
+    if (header) {
+      if (scrollY > 50) {
+        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+      } else {
+        header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
       }
-    }, 16);
-  }
+    }
 
+    // B. Effet parallaxe du hero
+    if (contactForm) {
+      // Vider les champs du formulaire à chaque rechargement de page
+      contactForm.reset();
 
-  // Message de bienvenue
-  console.log('%c🚀 Bienvenue sur Flexitronic', 'background: #667482; color: white; font-size: 18px; padding: 10px; border-radius: 5px;');
-  console.log('%cBureau d\'études en électronique - De la conception au produit fini', 'color: #718eaa; font-size: 14px;');
+      // Charger dynamiquement l'URL Formspree depuis le fichier formspree.key
+      fetch('formspree.key')
+        .then(response => response.text())
+        .then(url => {
+          contactForm.action = url.trim();
+        });
+      // Vider les champs au chargement de la page
+      contactForm.reset();
 
+      contactForm.addEventListener('submit', function (e) {
+        // Afficher un message de chargement
+        const submitButton = this.querySelector('.btn-primary');
+        const originalText = submitButton.textContent;
 
-  const images = document.querySelectorAll('img[data-src]');
+        submitButton.textContent = 'Envoi en cours...';
+        submitButton.disabled = true;
 
-  // Détecte quand une image entre dans la fenêtre d'affichage pour charger sa source
-  const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.getAttribute('data-src');
-        img.removeAttribute('data-src');
-        imageObserver.unobserve(img);
-      }
-    });
-  });
-
-  images.forEach(img => imageObserver.observe(img));
-
-
-  let isScrolling = false;
-
-  window.addEventListener('scroll', function () {
-    if (!isScrolling) {
-      window.requestAnimationFrame(function () {
-        // Vos animations personnalisées ici
-
-        isScrolling = false;
+        // Vider les champs après envoi (après un court délai pour laisser le temps à Formspree)
+        setTimeout(() => {
+          contactForm.reset();
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }, 1500);
       });
 
-      isScrolling = true;
+      // Validation en temps réel des champs
+      const inputs = contactForm.querySelectorAll('input, textarea');
+
+      inputs.forEach(input => {
+        input.addEventListener('blur', function () {
+          if (this.hasAttribute('required') && !this.value.trim()) {
+            this.style.borderColor = '#dc3545';
+          } else {
+            this.style.borderColor = '#dee2e6';
+          }
+        });
+
+        input.addEventListener('input', function () {
+          if (this.value.trim()) {
+            this.style.borderColor = '#28a745';
+          }
+        });
+      });
     }
   });
 
+// --- 5. FORMULAIRE DE CONTACT (FORMSPREE) ---
+const contactForm = document.getElementById('contact-form');
+
+if (contactForm) {
+  // Renseigne ton ID Formspree directement ici (C'est public, c'est normal !)
+  contactForm.action = "https://formspree.io/f/TON_ID_ICI";
+
+  contactForm.addEventListener('submit', function () {
+    const submitButton = this.querySelector('.btn-primary') || this.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.textContent = 'Envoi en cours...';
+      submitButton.disabled = true;
+    }
+  });
+
+  // Validation en temps réel des champs
+  const inputs = contactForm.querySelectorAll('input, textarea');
+  inputs.forEach(input => {
+    input.addEventListener('blur', function () {
+      if (this.hasAttribute('required') && !this.value.trim()) {
+        this.style.borderColor = '#dc3545';
+      } else {
+        this.style.borderColor = '#dee2e6';
+      }
+    });
+
+    input.addEventListener('input', function () {
+      if (this.value.trim()) {
+        this.style.borderColor = '#28a745';
+      }
+    });
+  });
+}
+
+// --- 6. OBSERVERS (ANIMATIONS & LAZY LOADING) ---
+
+// A. Observer pour les animations d'apparition
+const observerOptions = {
+  threshold: 0.15,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver(function (entries, obs) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+      // On arrête d'observer l'élément une fois animé pour économiser des ressources
+      obs.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+const animatedElements = document.querySelectorAll('.expertise-card, .realisation-card, .about-content');
+animatedElements.forEach(el => {
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
 });
 
+// B. Observer pour le Lazy Loading des images
+const images = document.querySelectorAll('img[data-src]');
+const imageObserver = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.getAttribute('data-src');
+      img.removeAttribute('data-src');
+      obs.unobserve(img); // Arrête d'observer une fois chargée
+    }
+  });
+});
 
-// Vérifie si un élément est entièrement visible dans la fenêtre d'affichage
-function isElementInViewport(el) {
-  const rect = el.getBoundingClientRect();
-  return (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-  );
-}
+images.forEach(img => imageObserver.observe(img));
 
-// Calcule la position absolue d'un élément dans la page
-function getOffset(element) {
-  const rect = element.getBoundingClientRect();
-  return {
-    top: rect.top + window.pageYOffset,
-    left: rect.left + window.pageXOffset
-  };
-}
+// --- 7. MESSAGE DE BIENVENUE ---
+console.log('%c🚀 Bienvenue sur Flexitronic', 'background: #667482; color: white; font-size: 18px; padding: 10px; border-radius: 5px;');
+console.log('%cBureau d\'études en électronique - De la conception au produit fini', 'color: #718eaa; font-size: 14px;');
 
-// Limite la fréquence d'exécution d'une fonction pour optimiser les performances (anti-rebond)
-function debounce(func, wait = 20, immediate = true) {
-  let timeout;
-  return function () {
-    const context = this, args = arguments;
-    const later = function () {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-}
-
-// Optimisation du scroll avec debounce
-window.addEventListener('scroll', debounce(function () {
-  // Vos fonctions de scroll optimisées
-}, 15));
+});
