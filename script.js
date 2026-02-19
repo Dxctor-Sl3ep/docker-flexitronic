@@ -195,8 +195,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Message de bienvenue
-  console.log('%c🚀 Bienvenue sur Flexitronic', 'background: #1a3c5e; color: white; font-size: 18px; padding: 10px; border-radius: 5px;');
-  console.log('%cBureau d\'études en électronique - De la conception au produit fini', 'color: #1a3c5e; font-size: 14px;');
+  console.log('%c🚀 Bienvenue sur Flexitronic', 'background: #667482; color: white; font-size: 18px; padding: 10px; border-radius: 5px;');
+  console.log('%cBureau d\'études en électronique - De la conception au produit fini', 'color: #718eaa; font-size: 14px;');
 
 
   const images = document.querySelectorAll('img[data-src]');
@@ -215,9 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   images.forEach(img => imageObserver.observe(img));
 
-  /* ========================================
-     DÉTECTION DU SCROLL POUR ANIMATIONS
-     ======================================== */
+
   let isScrolling = false;
 
   window.addEventListener('scroll', function () {
