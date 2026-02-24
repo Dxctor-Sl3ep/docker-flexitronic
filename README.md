@@ -110,3 +110,52 @@ Bureau d'études en électronique
 
 © 2026 Flexitronic. Tous droits réservés.
 
+## Déploiement du site avec Docker et OVH VPS
+
+### 1. Construction de l'image Docker
+
+```bash
+docker build -t flexitronic-site .
+```
+
+### 2. Test en local
+
+```bash
+docker run -p 8080:80 flexitronic-site
+```
+
+Ouvre ensuite http://localhost:8080 dans ton navigateur.
+
+### 3. Publication sur Docker Hub
+
+- Connecte-toi à Docker Hub :
+  ```bash
+  docker login
+  ```
+- Tag l'image :
+  ```bash
+  docker tag flexitronic-site <ton-utilisateur>/flexitronic-site:latest
+  ```
+- Pousse l'image :
+  ```bash
+  docker push <ton-utilisateur>/flexitronic-site:latest
+  ```
+
+### 4. Déploiement sur VPS OVH
+
+- Installe Docker sur le VPS.
+- Récupère l'image :
+  ```bash
+  docker pull <ton-utilisateur>/flexitronic-site:latest
+  ```
+- Lance le conteneur :
+  ```bash
+  docker run -d -p 80:80 <ton-utilisateur>/flexitronic-site:latest
+  ```
+
+Le site sera accessible sur l'adresse IP de ton VPS.
+
+---
+
+Remplace `<ton-utilisateur>` par ton nom d'utilisateur Docker Hub.
+
