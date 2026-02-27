@@ -199,4 +199,3 @@ images.forEach(img => imageObserver.observe(img));
 console.log('%c🚀 Bienvenue sur Flexitronic', 'background: #667482; color: white; font-size: 18px; padding: 10px; border-radius: 5px;');
 console.log('%cBureau d\'études en électronique - De la conception au produit fini', 'color: #718eaa; font-size: 14px;');
 
-});
