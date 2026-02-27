@@ -246,6 +246,7 @@ a:hover {
 
 .btn-primary:hover {
   background-color: #0056b3;
+  color: var(--white);
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
 }
@@ -258,6 +259,7 @@ a:hover {
 .btn-secondary:hover {
   background-color: var(--primary-dark);
   transform: translateY(-3px);
+  color: var(--white);
 }
 
 .btn-block {
