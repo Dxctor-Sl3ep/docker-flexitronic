@@ -123,11 +123,22 @@ a:hover {
   padding: 1rem var(--spacing-md);
 }
 
+
 .logo a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
   color: var(--primary-color);
   letter-spacing: 1px;
+}
+
+.logo img {
+  max-height: 50px;
+  height: auto;
+  width: auto;
+  display: block;
 }
 
 .logo a:hover {
@@ -630,5 +641,129 @@ a:hover {
   .expertise-grid,
   .realisation-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==============================
+   PAGES LÉGALES (Mentions Légales & Politique de Confidentialité)
+   ============================== */
+
+.legal-page {
+  background-color: var(--gray-light);
+  min-height: 100vh;
+  padding-top: 120px;
+}
+
+.legal-content {
+  background-color: var(--white);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto var(--spacing-lg);
+}
+
+.legal-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.legal-section h2 {
+  color: var(--primary-color);
+  font-size: 1.75rem;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.legal-section h3 {
+  color: var(--primary-dark);
+  font-size: 1.35rem;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.legal-section h4 {
+  color: var(--primary-dark);
+  font-size: 1.15rem;
+  margin-top: var(--spacing-sm);
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.legal-section p {
+  color: var(--gray-dark);
+  line-height: 1.8;
+  margin-bottom: var(--spacing-sm);
+  text-align: justify;
+}
+
+.legal-section ul {
+  margin-left: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  list-style-type: disc;
+}
+
+.legal-section li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  color: var(--gray-dark);
+}
+
+.legal-section a {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
+.legal-section a:hover {
+  color: var(--primary-light);
+}
+
+.legal-section strong {
+  color: var(--primary-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+.legal-back {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Responsive pour pages légales */
+@media (max-width: 768px) {
+  .legal-page {
+    padding-top: 100px;
+  }
+
+  .legal-content {
+    padding: var(--spacing-md);
+  }
+
+  .legal-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .legal-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .legal-section p {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .legal-content {
+    padding: var(--spacing-sm);
+  }
+
+  .legal-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .legal-section ul {
+    margin-left: var(--spacing-sm);
   }
 }
